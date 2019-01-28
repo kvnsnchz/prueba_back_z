@@ -38,33 +38,10 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-       /* $request->validate([
-            'email'       => 'required|string|email',
-            'password'    => 'required|string',
-        ]);
-        $credentials = request(['email', 'password']);
-        if (!Auth::attempt($credentials)) {
-            return response()->json([
-                'message' => 'Unauthorized'], 401);
-        }
-        $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token');
-        $token = $tokenResult->token;
-        if ($request->remember_me) {
-            $token->expires_at = Carbon::now()->addWeeks(20);
-        }
-        $token->save();
-        return response()->json([
-            'access_token' => $tokenResult->accessToken,
-            'token_type'   => 'Bearer',
-            'expires_at'   => Carbon::parse(
-                $tokenResult->token->expires_at)
-                    ->toDateTimeString(),
-        ]);*/
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
-            $user = Auth::user();//obtenemos el usuario logueado
-            $success['token'] =  $user->createToken('MyApp')->accessToken; //creamos el token
-            return response()->json(['success' => $success], 200);//se lo enviamos al usuario
+            $user = Auth::user();
+            $token =  $user->createToken('MyApp')->accessToken; 
+            return response()->json(['success' => 'true', 'user' => $user, 'token'=>$token], 200);
         } else {
             return response()->json(['error'=>'Unauthorised'], 401); 
         }
