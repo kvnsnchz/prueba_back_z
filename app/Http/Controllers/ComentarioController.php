@@ -3,27 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Articulo;
+use App\Comentario;
+use Validator;
 
 class ComentarioController extends Controller
 {
+    public function rules($id){
+        return ['contenido' => 'required',
+                'id_usuario' => 'required|exists:USUARIOS,id',
+                ];
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public static function index(Articulo $articulo)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $comentarios = Comentario::orderBy('id', 'DESC')->where('id_articulo',$articulo->id)->paginate();
+        foreach($comentarios as $c){
+            $c->usuario;
+            $c->articulo;
+        }
+        return response()->json($comentarios,SUCCESS);
     }
 
     /**
@@ -32,9 +36,16 @@ class ComentarioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Articulo $articulo)
     {
-        //
+        $validator = Validator::make($request->all(),$this->rules(0));
+
+        if ($validator->fails())
+            return response()->json(['message' => $validator->errors(),'code' => BAD_REQUEST], BAD_REQUEST);
+        
+        $request['id_articulo'] = $articulo->id;
+        $comentario = Comentario::create($request->all());
+        return response()->json(['message' => 'created successfully','code' => SUCCESS], SUCCESS);
     }
 
     /**
@@ -43,20 +54,11 @@ class ComentarioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Articulo $articulo, Comentario $comentario)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $comentario->usuario;
+        $comentario->articulo;
+        return response()->json($comentario,SUCCESS);
     }
 
     /**
@@ -66,9 +68,16 @@ class ComentarioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Articulo $articulo, Comentario $comentario)
     {
-        //
+        $validator = Validator::make($request->all(),$this->rules($comentario->id));
+
+        if ($validator->fails()) 
+            return response()->json(['message' => $validator->errors(), 'code' => BAD_REQUEST], BAD_REQUEST);            
+        
+        $request['id_articulo'] = $articulo->id;
+        $comentario->update($request->all());
+        return response()->json(['message' => 'updated successfully','code' => SUCCESS],SUCCESS);     
     }
 
     /**
@@ -77,8 +86,9 @@ class ComentarioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Articulo $articulo, Comentario $comentario)
     {
-        //
+        $comentario->delete();
+        return response()->json(['message' => 'delete successfully', 'code' => SUCCESS],SUCCESS);
     }
 }

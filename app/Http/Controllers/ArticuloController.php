@@ -23,7 +23,7 @@ class ArticuloController extends Controller
      */
     public static function index()
     {
-        $articulos = Articulo::paginate();
+        $articulos = Articulo::orderBy('id', 'DESC')->paginate();
         foreach($articulos as $a){
             $a->usuario;
             $a->articulos_reacciones;
