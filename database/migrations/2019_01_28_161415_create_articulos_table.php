@@ -17,7 +17,7 @@ class CreateArticulosTable extends Migration
             $table->increments('id');
             $table->string('titulo');
             $table->text('contenido');
-            $table->string('url_imagen');
+            $table->string('url_imagen')->default(null);;
             $table->integer('id_usuario')->unsigned();
             $table->timestamps();
 

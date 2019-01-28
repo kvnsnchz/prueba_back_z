@@ -15,11 +15,11 @@ class Articulo extends Model
         return $this->belongsTo('App\Usuario','id_usuario','id');
     }
 
-    public function articulo_reaccion(){
+    public function articulos_reacciones(){
         return $this->hasMany('App\Articulo_Reaccion','id_articulo','id');
     }
 
-    public function comentario(){
+    public function comentarios(){
     return $this->hasMany('App\Comentario','id_articulo','id');
     }
 }

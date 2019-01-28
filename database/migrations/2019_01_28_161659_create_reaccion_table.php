@@ -16,7 +16,7 @@ class CreateReaccionTable extends Migration
         Schema::create('REACCION', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->string('url_imagen');
+            $table->string('url_imagen')->default(null);;
             $table->timestamps();
         });
     }

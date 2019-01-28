@@ -11,7 +11,7 @@ class Reaccion extends Model
     protected $hidden = ['created_at','updated_at'];
     protected $guarded = array('id');
 
-    public function articulo_reaccion(){
+    public function articulos_reacciones(){
        return $this->hasMany('App\Articulo_Reaccion','id_reaccion','id');
     }
 }

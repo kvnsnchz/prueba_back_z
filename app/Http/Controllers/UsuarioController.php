@@ -26,19 +26,9 @@ class UsuarioController extends Controller
     {
         $usuarios = Usuario::paginate();
         foreach($usuarios as $u){
-            $u->articulo;
+            $u->articulos;
         }
         return response()->json($usuarios,SUCCESS);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -49,7 +39,13 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),$this->rules(0));
+
+        if ($validator->fails())
+            return response()->json(['message' => $validator->errors(),'code' => BAD_REQUEST], BAD_REQUEST);
+        
+        $usuario = Usuario::create($request->all());
+        return response()->json(['message' => 'created successfully','code' => SUCCESS], SUCCESS);
     }
 
     /**

@@ -11,7 +11,7 @@ class Usuario extends Model
     protected $hidden = ['created_at','updated_at', 'password'];
     protected $guarded = array('id');
 
-    public function articulo(){
+    public function articulos(){
        return $this->hasMany('App\Articulo','id_usuario','id');
     }
     
