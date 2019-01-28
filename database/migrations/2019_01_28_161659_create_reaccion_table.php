@@ -13,7 +13,7 @@ class CreateReaccionTable extends Migration
      */
     public function up()
     {
-        Schema::create('REACCION', function (Blueprint $table) {
+        Schema::create('REACCIONES', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
             $table->string('url_imagen')->nullable();
@@ -28,6 +28,6 @@ class CreateReaccionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('REACCION');
+        Schema::dropIfExists('REACCIONES');
     }
 }

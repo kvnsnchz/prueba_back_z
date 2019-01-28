@@ -13,14 +13,14 @@ class CreateArticuloReaccionTable extends Migration
      */
     public function up()
     {
-        Schema::create('ARTICULO_REACCION', function (Blueprint $table) {
+        Schema::create('ARTICULOS_REACCIONES', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_articulo')->unsigned();
             $table->integer('id_reaccion')->unsigned();
             $table->timestamps();
 
             $table->foreign('id_articulo')->references('id')->on('ARTICULOS')->onDelete('cascade');
-            $table->foreign('id_reaccion')->references('id')->on('REACCION')->onDelete('cascade');
+            $table->foreign('id_reaccion')->references('id')->on('REACCIONES')->onDelete('cascade');
         });
     }
 
@@ -31,6 +31,6 @@ class CreateArticuloReaccionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ARTICULO_REACCION');
+        Schema::dropIfExists('ARTICULOS_REACCIONES');
     }
 }
