@@ -74,6 +74,7 @@ class UsuarioController extends Controller
         if ($validator->fails()) 
             return response()->json(['message' => $validator->errors(), 'code' => BAD_REQUEST], BAD_REQUEST);            
         
+        $request['password'] = bcrypt($request->password);
         $usuario->update($request->all());
         return response()->json(['message' => 'updated successfully','code' => SUCCESS],SUCCESS);     
     }

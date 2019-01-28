@@ -8,8 +8,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('logout', 'AuthController@logout');
-    
-    Route::apiResource('usuarios','UsuarioController')->except(['destroy']);
+
+    Route::apiResource('usuarios','UsuarioController')->except(['destroy','store']);
 
     Route::apiResource('articulos','ArticuloController');
 
