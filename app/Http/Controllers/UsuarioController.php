@@ -54,20 +54,10 @@ class UsuarioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Usuario $usuario)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $usuario->articulos;
+        return response()->json($usuario, SUCCESS);
     }
 
     /**
@@ -77,19 +67,15 @@ class UsuarioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Usuario $usuario)
     {
-        //
+        $validator = Validator::make($request->all(),$this->rules($usuario->id));
+
+        if ($validator->fails()) 
+            return response()->json(['message' => $validator->errors(), 'code' => BAD_REQUEST], BAD_REQUEST);            
+        
+        $usuario->update($request->all());
+        return response()->json(['message' => 'updated successfully','code' => SUCCESS],SUCCESS);     
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
