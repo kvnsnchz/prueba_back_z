@@ -6,10 +6,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('usuarios','UsuarioController')->except(['destroy']);
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::apiResource('usuarios','UsuarioController')->except(['destroy']);
 
-Route::apiResource('articulos','ArticuloController');
+    Route::apiResource('articulos','ArticuloController');
 
-Route::group(['prefix' => 'articulo/{articulo}'], function () {
-    Route::apiResource('comentarios','ComentarioController');
+    Route::group(['prefix' => 'articulo/{articulo}'], function () {
+        Route::apiResource('comentarios','ComentarioController');
+    });
 });
+
+
+Route::post('login', 'AuthController@login');
+Route::post('register', 'AuthController@signup');

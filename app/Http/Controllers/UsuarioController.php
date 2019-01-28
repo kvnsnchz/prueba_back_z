@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Usuario;
+use App\User;
 use Validator;
 
 class UsuarioController extends Controller
@@ -24,7 +24,7 @@ class UsuarioController extends Controller
      */
     public static function index()
     {
-        $usuarios = Usuario::paginate();
+        $usuarios = User::paginate();
         foreach($usuarios as $u){
             $u->articulos;
         }
@@ -44,7 +44,7 @@ class UsuarioController extends Controller
         if ($validator->fails())
             return response()->json(['message' => $validator->errors(),'code' => BAD_REQUEST], BAD_REQUEST);
         
-        $usuario = Usuario::create($request->all());
+        $usuario = User::create($request->all());
         return response()->json(['message' => 'created successfully','code' => SUCCESS], SUCCESS);
     }
 

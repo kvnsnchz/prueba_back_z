@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-
+use Illuminate\Auth\AuthenticationException;
 class Handler extends ExceptionHandler
 {
     /**
@@ -51,7 +51,20 @@ class Handler extends ExceptionHandler
         if($this->isHttpException($e)){
             $code = $e->getStatusCode();
         }
+        if($error == "Route [signup] not defined."){
+            $error="Unauthenticated.";
+            $code = 401;
+        }
         return response()->json(['error' => $error,'code'=>$code],$code);
        //return parent::render($request, $e);
+    }
+
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        }
+
+        return redirect()->guest(route('auth.login'));
     }
 }
